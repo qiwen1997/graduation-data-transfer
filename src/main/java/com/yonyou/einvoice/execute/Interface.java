@@ -39,7 +39,8 @@ public class Interface implements CommandLineRunner {
     System.out.println("输入数字1，进行一次全量");
     System.out.println("输入数字2，进行一次增量");
     System.out.println("输入数字3，进行定时增量");
-    System.out.println("输入数字4，退出");
+    System.out.println("输入数字4，将Mysql表中数据转移至文件");
+    System.out.println("输入数字5，退出");
     Integer option = scanner.nextInt();
     if (optionEnum.ONE_FUll.getKey().equals(option)) {
       log.info("进行一次全量");
@@ -57,6 +58,12 @@ public class Interface implements CommandLineRunner {
       log.info("进行定时增量");
 
       quartzManager.startJob();
+
+    }else if (optionEnum.MYSQL_FILE.getKey().equals(option)){
+      log.info("将Mysql表中数据转移至文件中");
+      doWork.doMysqltoFile();
+
+      anInterface.run();
     } else if (optionEnum.EXIT.getKey().equals(option)) {
       log.info("退出");
       return;

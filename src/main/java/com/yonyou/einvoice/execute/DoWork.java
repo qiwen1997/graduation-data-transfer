@@ -41,4 +41,8 @@ public class DoWork {
     jsonUtil.setMaxdate(Olddate, Newdate);
     datax.doIncrementFile();
   }
+
+  public void doMysqltoFile(){
+    datax.doMysqltoFile();
+  }
 }

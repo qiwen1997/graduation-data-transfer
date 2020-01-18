@@ -20,4 +20,9 @@ public interface Datax {
    * 进行增量
    */
   void doIncrementFile();
+
+  /**
+   * 将Mysql数据转移到文件
+   */
+  void doMysqltoFile();
 }

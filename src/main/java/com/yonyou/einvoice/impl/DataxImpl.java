@@ -37,6 +37,9 @@ public class DataxImpl implements Datax {
   @Value("${fileJsonPath}")
   private String fileJsonPath;
 
+  @Value("${mysqltoFileJsonPath}")
+  private String mysqltoFileJsonPath;
+
   @Value("${pythonPath}")
   private String pythonPath;
 
@@ -99,4 +102,26 @@ public class DataxImpl implements Datax {
       logger.error(e.getMessage());
     }
   }
+
+  /**
+   * 将Mysql数据转移到文件
+   */
+  @Override
+  public void doMysqltoFile() {
+    File f = new File(mysqltoFileJsonPath);
+    String cmd = pythonPath + " " + dataxpath + " " + f.getAbsolutePath();
+    try {
+      Process process = Runtime.getRuntime().exec(cmd);
+      BufferedReader in = new BufferedReader(
+          new InputStreamReader(process.getInputStream(), "UTF-8"));
+      String line = null;
+      while ((line = in.readLine()) != null) {
+        logger.info(line);
+      }
+    } catch (IOException e) {
+      logger.error(e.getMessage());
+    }
+  }
+
+
 }
