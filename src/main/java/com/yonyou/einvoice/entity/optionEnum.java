@@ -10,7 +10,8 @@ public enum optionEnum {
   ONE_INCREMENT(2, "OneIncrement"),
   TIMING_INCREMENT(3, "TimingIncrement"),
   MYSQL_FILE(4, "MysqltoFile"),
-  EXIT(5, "Exit");
+  MONGODB_MYSQL(5, "MongoDBtoMysql"),
+  EXIT(6, "Exit");
 
   private Integer key;
   private String msg;

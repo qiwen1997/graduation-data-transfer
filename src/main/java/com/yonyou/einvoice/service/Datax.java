@@ -25,4 +25,9 @@ public interface Datax {
    * 将Mysql数据转移到文件
    */
   void doMysqltoFile();
+
+  /**
+   * 将MongoDB数据转移到Mysql
+   */
+  void doMongoDBtoMysql();
 }

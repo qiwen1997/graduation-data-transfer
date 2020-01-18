@@ -40,7 +40,8 @@ public class Interface implements CommandLineRunner {
     System.out.println("输入数字2，进行一次增量");
     System.out.println("输入数字3，进行定时增量");
     System.out.println("输入数字4，将Mysql表中数据转移至文件");
-    System.out.println("输入数字5，退出");
+    System.out.println("输入数字5，将MongoDB表中数据转移至Mysql");
+    System.out.println("输入数字6，退出");
     Integer option = scanner.nextInt();
     if (optionEnum.ONE_FUll.getKey().equals(option)) {
       log.info("进行一次全量");
@@ -64,7 +65,12 @@ public class Interface implements CommandLineRunner {
       doWork.doMysqltoFile();
 
       anInterface.run();
-    } else if (optionEnum.EXIT.getKey().equals(option)) {
+    } else if (optionEnum.MONGODB_MYSQL.getKey().equals(option)) {
+      log.info("将MongoDB表中数据转移至Mysql");
+      doWork.doMongoDBtoMysql();
+
+      anInterface.run();
+    }else if (optionEnum.EXIT.getKey().equals(option)) {
       log.info("退出");
       return;
     } else {

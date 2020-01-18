@@ -42,7 +42,17 @@ public class DoWork {
     datax.doIncrementFile();
   }
 
+  /**
+   * 将Mysql数据转移到文件
+   */
   public void doMysqltoFile(){
     datax.doMysqltoFile();
+  }
+
+  /**
+   * 将MongoDB数据转移到Mysql
+   */
+  public void doMongoDBtoMysql(){
+    datax.doMongoDBtoMysql();
   }
 }
