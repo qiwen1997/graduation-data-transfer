@@ -5,7 +5,7 @@ package com.yonyou.einvoice.entity;
  *
  * @author qiwen
  */
-public enum optionEnum {
+public enum OptionEnum {
   ONE_FUll(1, "OneFull"),
   ONE_INCREMENT(2, "OneIncrement"),
   TIMING_INCREMENT(3, "TimingIncrement"),
@@ -16,7 +16,7 @@ public enum optionEnum {
   private Integer key;
   private String msg;
 
-  optionEnum(Integer key, String msg) {
+  OptionEnum(Integer key, String msg) {
     this.key = key;
     this.msg = msg;
   }
