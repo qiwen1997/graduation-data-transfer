@@ -1,8 +1,4 @@
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/views
-      suffix: .jsp
   quartz:
     #相关属性配置
     properties:
