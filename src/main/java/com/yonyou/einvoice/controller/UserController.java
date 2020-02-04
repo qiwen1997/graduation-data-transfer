@@ -3,9 +3,11 @@ package com.yonyou.einvoice.controller;
 import com.yonyou.einvoice.dao.UserMapper;
 import com.yonyou.einvoice.entity.UserEntity;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,9 +17,14 @@ public class UserController {
   private UserMapper userMapper;
   //用户登陆
   @RequestMapping(value = "/login", method = RequestMethod.GET)
-  public String login(UserEntity user){
+  public String login(@RequestParam("name") String name,@RequestParam("password") String password
+     /* UserEntity user*/,HttpServletRequest request ){
+    UserEntity user=new UserEntity();
+    user.setName(name);
+    user.setPassword(password);
     UserEntity u = userMapper.login(user);
     if(u != null){
+      request.getSession().setAttribute("USER",u);
       return "success";
     }else{
       return  "error";
