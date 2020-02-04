@@ -13,6 +13,10 @@
     select * from user where name = #{name} and password= #{password}
   </select>
 
+  <select id="search" parameterType="com.yonyou.einvoice.entity.UserEntity" resultType="com.yonyou.einvoice.entity.UserEntity">
+    select * from user where name = #{name}
+  </select>
+
   <insert id="addUser" parameterType="com.yonyou.einvoice.entity.UserEntity" useGeneratedKeys="true" keyProperty="id">
     insert into user values (#{id},#{name},#{password})
   </insert>

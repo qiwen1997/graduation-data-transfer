@@ -11,6 +11,8 @@ public interface UserMapper {
 
   UserEntity login(UserEntity user);
 
+  UserEntity search(UserEntity user);
+
   boolean addUser(UserEntity user);
 
   List<UserEntity> findAllUser();

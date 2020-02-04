@@ -84,7 +84,7 @@
         if (d === "success") {
           window.location.href = 'Show.html';
         } else {
-          window.location.href = 'Error.html';
+          window.alert("用户名已存在");
         }
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
