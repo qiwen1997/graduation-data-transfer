@@ -15,3 +15,6 @@ spring:
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
+
+logging:
+  file: my.log

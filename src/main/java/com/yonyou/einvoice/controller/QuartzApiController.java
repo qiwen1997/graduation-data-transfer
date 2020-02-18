@@ -3,6 +3,7 @@ package com.yonyou.einvoice.controller;
 import com.yonyou.einvoice.exception.ReturnMessageUtil;
 import com.yonyou.einvoice.execute.DoWork;
 import com.yonyou.einvoice.timing.QuartzManager;
+import com.yonyou.einvoice.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class QuartzApiController {
 
   @Autowired
   private QuartzManager quartzManager;
+
+  @Autowired
+  private JsonUtil jsonUtil;
 
   @Autowired
   private DoWork doWork;
@@ -47,6 +51,7 @@ public class QuartzApiController {
   @GetMapping("/modify")
   public boolean modifyQuartzJob(String name, String group, String cron) {
     boolean flag = true;
+    log.info("");
     try {
       flag = quartzManager.modifyJob(name, group, cron);
     } catch (SchedulerException e) {
@@ -115,16 +120,62 @@ public class QuartzApiController {
     return ReturnMessageUtil.sucess().toJSON();
   }
 
-  @GetMapping(value = "/full")
-  public String fullJob(String name, String group) {
+  @GetMapping(value = "/oneFull")
+  public void oneFull() {
     try {
       quartzManager.pauseAllJob();
+      log.info("进行一次全量");
       doWork.doFull();
       quartzManager.resumeAllJob();
     } catch (SchedulerException e) {
-      log.error("full 全量任务出现异常 {}", e.getMessage());
+      log.error("oneFull 一次全量任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+    //return ReturnMessageUtil.sucess().toJSON();
   }
+
+  @GetMapping(value = "/oneIncrement")
+  public void oneIncrement() {
+    try {
+      quartzManager.pauseAllJob();
+      log.info("进行一次增量");
+      if (jsonUtil.getMaxTimeFile() == null) {
+        log.info("目录中无最大ID记录文件，请先进行一次全量，或部署以max_ID为开头的文件，内容为最大ID");
+      } else {
+        doWork.doIncrement();
+      }
+      quartzManager.resumeAllJob();
+    } catch (SchedulerException e) {
+      log.error("oneIncrement 一次增量任务出现异常 {}", e.getMessage());
+    }
+    //return ReturnMessageUtil.sucess().toJSON();
+  }
+
+
+  @GetMapping(value = "/MysqltoFile")
+  public void MysqltoFile() {
+    try {
+      quartzManager.pauseAllJob();
+      log.info("将Mysql表中数据转移至文件中");
+      doWork.doMysqltoFile();
+      quartzManager.resumeAllJob();
+    } catch (SchedulerException e) {
+      log.error("oneFull 一次全量任务出现异常 {}", e.getMessage());
+    }
+    //return ReturnMessageUtil.sucess().toJSON();
+  }
+
+  @GetMapping(value = "/MongoDBtoMysql")
+  public void MongoDBtoMysql() {
+    try {
+      quartzManager.pauseAllJob();
+      log.info("将MongoDB表中数据转移至Mysql");
+      doWork.doMongoDBtoMysql();
+      quartzManager.resumeAllJob();
+    } catch (SchedulerException e) {
+      log.error("oneFull 一次全量任务出现异常 {}", e.getMessage());
+    }
+    //return ReturnMessageUtil.sucess().toJSON();
+  }
+
 }
 

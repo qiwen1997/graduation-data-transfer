@@ -13,7 +13,7 @@ public interface UserMapper {
 
   UserEntity search(UserEntity user);
 
-  boolean addUser(UserEntity user);
+  Integer addUser(UserEntity user);
 
   List<UserEntity> findAllUser();
 }
