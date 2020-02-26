@@ -90,6 +90,178 @@
       }
     })
   }
+
+  function start() {
+    $.ajax({
+      url: '/start',
+      type: 'get',
+    })
+  }
+
+  function pause() {
+    var name = prompt("请输入job名", "");
+    var group = prompt("请输入group名", "");
+    //var cron=prompt("请输入cron表达式","");
+
+    if (name =="" || group == "") {
+      window.alert("输入不能为空");
+      //pause();
+      return;
+    }
+    if (name == null || group == null) {
+      window.alert("输入不能为空");
+      //pause();
+      return;
+    }
+
+    $.ajax({
+      url: '/pause',
+      type: 'get',
+      dataType: 'text',
+      data: {"name": name, "group": group},
+    })
+  }
+
+  function pauseAll() {
+    $.ajax({
+      url: '/pauseAll',
+      type: 'get',
+    })
+  }
+
+  function resume() {
+    var name=prompt("请输入要恢复的job名","");
+    var group=prompt("请输入要恢复的group名","");
+    //var cron=prompt("请输入cron表达式","");
+
+    if(name==""||group==""){
+      window.alert("输入不能为空");
+      //resume();
+      return;
+    }
+
+    if(name==null||group==null){
+      window.alert("输入不能为空");
+      //resume();
+      return;
+    }
+
+    $.ajax({
+      url: '/resume',
+      type: 'get',
+      dataType: 'text',
+      data: {"name": name, "group": group},
+    })
+  }
+
+  function resumeAll() {
+    $.ajax({
+      url: '/resumeAll',
+      type: 'get',
+    })
+  }
+
+  function infof() {
+    var name=prompt("请输入要查询的job名","");
+    var group=prompt("请输入要查询的group名","");
+    //var cron=prompt("请输入cron表达式","");
+
+    if(name==""||group==""){
+      window.alert("输入不能为空");
+      //infof();
+      return;
+    }
+
+    if(name==null||group==null){
+      window.alert("输入不能为空");
+      //infof();
+      return;
+    }
+
+    $.ajax({
+      url: '/info',
+      type: 'get',
+      dataType: 'text',
+      data: {"name": name, "group": group},
+    })
+  }
+
+  function modify() {
+    var name=prompt("请输入要修改的job名","");
+    var group=prompt("请输入要修改的group名","");
+    var cron=prompt("请输入修改后的cron表达式","");
+
+    if(name==""||group==""||cron==""){
+      window.alert("输入不能为空");
+      //modify();
+      return;
+    }
+
+    if(name==null||group==null||cron==null){
+      window.alert("输入不能为空");
+      //modify();
+      return;
+    }
+
+    $.ajax({
+      url: '/modify',
+      type: 'get',
+      dataType: 'text',
+      data: {"name": name, "group": group,"cron": cron},
+    })
+  }
+
+  function insertf() {
+
+    window.alert("job只能填写job1或job2；job1为定时增量任务，job2为定时全量任务");
+    var name=prompt("请输入job名","");
+    var group=prompt("请输入group名","");
+    var cron=prompt("请输入cron表达式","");
+
+    if(name==""||group==""||cron==""){
+      window.alert("输入不能为空");
+      //insertf();
+      return;
+    }
+
+    if(name==null||group==null||cron==null){
+      window.alert("输入不能为空");
+      //insertf();
+      return;
+    }
+
+    $.ajax({
+      url: '/insert',
+      type: 'get',
+      dataType: 'text',
+      data: {"name": name, "group": group,"cron": cron},
+    })
+  }
+
+  function deletef() {
+    var name=prompt("请输入要删除的job名","");
+    var group=prompt("请输入要删除的group名","");
+   // var cron=prompt("请输入cron表达式","");
+
+    if(name==""||group==""){
+      window.alert("输入不能为空");
+      //deletef();
+      return;
+    }
+
+    if(name==null||group==null){
+      window.alert("输入不能为空");
+      //deletef();
+      return;
+    }
+
+    $.ajax({
+      url: '/delete',
+      type: 'get',
+      dataType: 'text',
+      data: {"name": name, "group": group},
+    })
+  }
 </script>
 
 <body class="adminbody">
@@ -221,15 +393,15 @@
                     <li class="submenu">
 						<a href="#"><i class="fa fa-fw fa-th"></i> <span> 定时增量数据同步 </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled">
-                                <li><a href="star-rating.html">开始定时任务</a></li>
-								<li><a href="range-sliders.html">暂停某一任务</a></li>
-                              <li><a href="range-sliders.html">暂停全部任务</a></li>
-								<li><a href="tree-view.html">恢复某一任务</a></li>
-                              <li><a href="tree-view.html">恢复全部任务</a></li>
-								<li><a href="sweetalert.html">显示任务信息</a></li>
-								<li><a href="calendar.html">修改任务</a></li>
-								<li><a href="gmaps.html">新增任务</a></li>
-								<li><a href="counter-up.html">删除某一任务</a></li>
+                                <li><a href="#" onclick="start()">开始定时任务</a></li>
+								<li><a href="#" onclick="pause()">暂停某一任务</a></li>
+                              <li><a href="#" onclick="pauseAll()">暂停全部任务</a></li>
+								<li><a href="#" onclick="resume()">恢复某一任务</a></li>
+                              <li><a href="#" onclick="resumeAll()">恢复全部任务</a></li>
+								<li><a href="#" onclick="infof()">显示任务信息</a></li>
+								<li><a href="#" onclick="modify()">修改任务</a></li>
+								<li><a href="#" onclick="insertf()">新增任务</a></li>
+								<li><a href="#" onclick="deletef()">删除某一任务</a></li>
                             </ul>
                     </li>
 

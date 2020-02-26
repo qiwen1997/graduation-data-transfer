@@ -28,28 +28,29 @@ public class QuartzApiController {
   private DoWork doWork;
 
   @GetMapping("/start")
-  public String startQuartzJob() {
+  public void startQuartzJob() {
     try {
       quartzManager.startJob();
     } catch (SchedulerException e) {
       log.error("start 开始任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+    //return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping("/info")
-  public String getQuartzJob(String name, String group) {
+  public void getQuartzJob(String name, String group) {
     String info = null;
     try {
       info = quartzManager.getJobInfo(name, group);
     } catch (SchedulerException e) {
       log.error("info 显示信息出现异常 {}", e.getMessage());
     }
-    return info;
+    log.info(info);
+   // return info;
   }
 
   @GetMapping("/modify")
-  public boolean modifyQuartzJob(String name, String group, String cron) {
+  public void modifyQuartzJob(String name, String group, String cron) {
     boolean flag = true;
     log.info("");
     try {
@@ -57,67 +58,70 @@ public class QuartzApiController {
     } catch (SchedulerException e) {
       log.error("modify 修改任务出现异常 {}", e.getMessage());
     }
-    return flag;
+    //return flag;
   }
 
   @GetMapping("/insert")
-  public String insertQuartzJob(String name, String group, String cron) {
+  public void insertQuartzJob(String name, String group, String cron) {
     try {
+      name=name.trim();
+      group=group.trim();
+      cron=cron.trim();
       quartzManager.insertJob(name, group, cron);
     } catch (SchedulerException e) {
       log.error("insert 新增任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+   // return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping(value = "/pause")
-  public String pauseQuartzJob(String name, String group) {
+  public void pauseQuartzJob(String name, String group) {
     try {
       quartzManager.pauseJob(name, group);
     } catch (SchedulerException e) {
       log.error("pause 暂停任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+    //return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping(value = "/pauseAll")
-  public String pauseAllQuartzJob() {
+  public void pauseAllQuartzJob() {
     try {
       quartzManager.pauseAllJob();
     } catch (SchedulerException e) {
       log.error("pauseAll 全部暂停出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+    //return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping(value = "/resume")
-  public String resumeQuartzJob(String name, String group) {
+  public void resumeQuartzJob(String name, String group) {
     try {
       quartzManager.resumeJob(name, group);
     } catch (SchedulerException e) {
       log.error("resume 恢复任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+   // return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping(value = "/resumeAll")
-  public String resumeAllQuartzJob() {
+  public void resumeAllQuartzJob() {
     try {
       quartzManager.resumeAllJob();
     } catch (SchedulerException e) {
       log.error("resumeAll 恢复全部任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+    //return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping(value = "/delete")
-  public String deleteJob(String name, String group) {
+  public void deleteJob(String name, String group) {
     try {
       quartzManager.deleteJob(name, group);
     } catch (SchedulerException e) {
       log.error("delete 删除任务出现异常 {}", e.getMessage());
     }
-    return ReturnMessageUtil.sucess().toJSON();
+    //return ReturnMessageUtil.sucess().toJSON();
   }
 
   @GetMapping(value = "/oneFull")

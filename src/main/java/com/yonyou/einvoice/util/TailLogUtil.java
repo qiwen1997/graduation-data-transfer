@@ -11,7 +11,7 @@ public class TailLogUtil extends Thread {
 
   private final int READ_SIZE = 128;		//日志文件默认读取大小，单位：KB
   private final int TIME_MILLS = 100;		//日志读取返回时间
-  private final int READ_LINES = 1;		//日志读取每次返回的行数
+  private final int READ_LINES = 0;		//日志读取每次返回的行数
 
   private BufferedReader reader;
 

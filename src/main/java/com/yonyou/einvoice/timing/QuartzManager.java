@@ -129,12 +129,24 @@ public class QuartzManager {
    * 添加一个任务
    */
   public void insertJob(String name, String group, String cron) throws SchedulerException {
-    log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
-    JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity(name, group).build();
-    CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
-    CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
-        .withSchedule(cronScheduleBuilder).build();
-    scheduler.scheduleJob(jobDetail, cronTrigger);
+
+    if(name.equals("job1")) {
+      log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
+      JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity(name, group).build();
+      CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+      CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
+          .withSchedule(cronScheduleBuilder).build();
+      scheduler.scheduleJob(jobDetail, cronTrigger);
+    }else if (name.equals("job2")){
+      log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
+      JobDetail jobDetail = JobBuilder.newJob(MyJob2.class).withIdentity(name, group).build();
+      CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+      CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
+          .withSchedule(cronScheduleBuilder).build();
+      scheduler.scheduleJob(jobDetail, cronTrigger);
+    }else{
+      log.info("name名不合法");
+    }
   }
 
   private void startJob1() throws SchedulerException {
