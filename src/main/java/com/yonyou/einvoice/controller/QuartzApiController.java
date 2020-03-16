@@ -52,12 +52,17 @@ public class QuartzApiController {
   @GetMapping("/modify")
   public void modifyQuartzJob(String name, String group, String cron) {
     boolean flag = true;
-    log.info("");
     try {
+      String ss=quartzManager.getJobInfo(name, group);
+      if(ss.equals("没有查询到 Job的name："+name+" group:" + group+" 的任务的信息")){
+        log.info(ss);
+        return;
+      }
       flag = quartzManager.modifyJob(name, group, cron);
     } catch (SchedulerException e) {
       log.error("modify 修改任务出现异常 {}", e.getMessage());
     }
+
     //return flag;
   }
 
@@ -67,6 +72,11 @@ public class QuartzApiController {
       name=name.trim();
       group=group.trim();
       cron=cron.trim();
+      String ss=quartzManager.getJobInfo(name, group);
+      if(!ss.equals("没有查询到 Job的name："+name+" group:" + group+" 的任务的信息")){
+        log.info("任务已存在，添加任务失败");
+        return;
+      }
       quartzManager.insertJob(name, group, cron);
     } catch (SchedulerException e) {
       log.error("insert 新增任务出现异常 {}", e.getMessage());
@@ -77,6 +87,11 @@ public class QuartzApiController {
   @GetMapping(value = "/pause")
   public void pauseQuartzJob(String name, String group) {
     try {
+      String ss=quartzManager.getJobInfo(name, group);
+      if(ss.equals("没有查询到 Job的name："+name+" group:" + group+" 的任务的信息")){
+        log.info(ss);
+        return;
+      }
       quartzManager.pauseJob(name, group);
     } catch (SchedulerException e) {
       log.error("pause 暂停任务出现异常 {}", e.getMessage());
@@ -97,6 +112,11 @@ public class QuartzApiController {
   @GetMapping(value = "/resume")
   public void resumeQuartzJob(String name, String group) {
     try {
+      String ss=quartzManager.getJobInfo(name, group);
+      if(ss.equals("没有查询到 Job的name："+name+" group:" + group+" 的任务的信息")){
+        log.info(ss);
+        return;
+      }
       quartzManager.resumeJob(name, group);
     } catch (SchedulerException e) {
       log.error("resume 恢复任务出现异常 {}", e.getMessage());
@@ -117,6 +137,11 @@ public class QuartzApiController {
   @GetMapping(value = "/delete")
   public void deleteJob(String name, String group) {
     try {
+      String ss=quartzManager.getJobInfo(name, group);
+      if(ss.equals("没有查询到 Job的name："+name+" group:" + group+" 的任务的信息")){
+        log.info(ss);
+        return;
+      }
       quartzManager.deleteJob(name, group);
     } catch (SchedulerException e) {
       log.error("delete 删除任务出现异常 {}", e.getMessage());

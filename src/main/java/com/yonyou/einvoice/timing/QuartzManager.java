@@ -46,28 +46,39 @@ public class QuartzManager {
    */
   public String getJobInfo(String name, String group) throws SchedulerException {
     log.info("获得Job信息,Job的name:" + name + " group:" + group);
-    TriggerKey triggerKey = new TriggerKey(name, group);
-    CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-    return String.format("time:%s,state:%s", cronTrigger.getCronExpression(),
-        scheduler.getTriggerState(triggerKey).name());
+    String ss=null;
+    try {
+      TriggerKey triggerKey = new TriggerKey(name, group);
+      CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+      ss = String.format("time:%s,state:%s", cronTrigger.getCronExpression(),
+          scheduler.getTriggerState(triggerKey).name());
+    }catch (NullPointerException e){
+      return "没有查询到 Job的name："+name+" group:" + group+" 的任务的信息";
+    }
+    return ss;
   }
 
   /**
    * 修改某个任务的执行时间
    */
   public boolean modifyJob(String name, String group, String cron) throws SchedulerException {
-    log.info("修改某个任务的执行时间 name:" + name + " group:" + group + " cron:" + cron);
-    Date date = null;
-    TriggerKey triggerKey = new TriggerKey(name, group);
-    CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-    String oldTime = cronTrigger.getCronExpression();
-    if (!oldTime.equalsIgnoreCase(cron)) {
-      CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
-      CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(name, group)
-          .withSchedule(cronScheduleBuilder).build();
-      date = scheduler.rescheduleJob(triggerKey, trigger);
+    try {
+      log.info("修改某个任务的执行时间 name:" + name + " group:" + group + " cron:" + cron);
+      Date date = null;
+      TriggerKey triggerKey = new TriggerKey(name, group);
+      CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+      String oldTime = cronTrigger.getCronExpression();
+      if (!oldTime.equalsIgnoreCase(cron)) {
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(name, group)
+            .withSchedule(cronScheduleBuilder).build();
+        date = scheduler.rescheduleJob(triggerKey, trigger);
+      }
+      return date != null;
+    }catch (RuntimeException e){
+      log.info("Cron表达式不合法");
+      return false;
     }
-    return date != null;
   }
 
   /**
@@ -130,22 +141,27 @@ public class QuartzManager {
    */
   public void insertJob(String name, String group, String cron) throws SchedulerException {
 
-    if(name.equals("job1")) {
-      log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
-      JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity(name, group).build();
-      CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
-      CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
-          .withSchedule(cronScheduleBuilder).build();
-      scheduler.scheduleJob(jobDetail, cronTrigger);
-    }else if (name.equals("job2")){
-      log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
-      JobDetail jobDetail = JobBuilder.newJob(MyJob2.class).withIdentity(name, group).build();
-      CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
-      CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
-          .withSchedule(cronScheduleBuilder).build();
-      scheduler.scheduleJob(jobDetail, cronTrigger);
-    }else{
-      log.info("name名不合法");
+    try {
+      if (name.equals("job1")) {
+        log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
+        JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity(name, group).build();
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
+            .withSchedule(cronScheduleBuilder).build();
+        scheduler.scheduleJob(jobDetail, cronTrigger);
+      } else if (name.equals("job2")) {
+        log.info("添加一个任务 name:" + name + " group:" + group + " cron:" + cron);
+        JobDetail jobDetail = JobBuilder.newJob(MyJob2.class).withIdentity(name, group).build();
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(name, group)
+            .withSchedule(cronScheduleBuilder).build();
+        scheduler.scheduleJob(jobDetail, cronTrigger);
+      } else {
+        log.info("name名不合法");
+      }
+    }catch (RuntimeException e){
+      log.info("Cron表达式不合法");
+      return;
     }
   }
 
